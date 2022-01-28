@@ -21,17 +21,15 @@ async def start(event):
         await userbot.start()
         await idle()
     except Exception as e:
-        if 'Client is already connected' in str(e):
-            pass
-        else:
+        if 'Client is already connected' not in str(e):
             await event.client.send_message(event.chat_id, "Error while starting Client, check if your API and SESSION is right.")
             return
     
 @bot.on(events.callbackquery.CallbackQuery(data="sett"))
 async def sett(event):    
-    Drone = event.client                    
+    Drone = event.client
     button = await event.get_message()
-    msg = await button.get_reply_message() 
+    msg = await button.get_reply_message()
     await event.delete()
     async with Drone.conversation(event.chat_id) as conv: 
         xx = await conv.send_message("Send me any image for thumbnail as a `reply` to this message.")
@@ -39,10 +37,8 @@ async def sett(event):
         if not x.media:
             xx.edit("No media found.")
         mime = x.file.mime_type
-        if not 'png' in mime:
-            if not 'jpg' in mime:
-                if not 'jpeg' in mime:
-                    return await xx.edit("No image found.")
+        if 'png' not in mime and 'jpg' not in mime and 'jpeg' not in mime:
+            return await xx.edit("No image found.")
         await xx.delete()
         t = await event.client.send_message(event.chat_id, 'Trying.')
         path = await event.client.download_media(x.media)

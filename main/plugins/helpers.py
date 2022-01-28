@@ -16,20 +16,16 @@ async def join(client, invite_link):
     except FloodWait:
         return "Too many requests, try again later."
     except Exception as e:
-        return f"{str(e)}"
+        return f'{e}'
            
 #Regex---------------------------------------------------------------------------------------------------------------
 #to get the url from event
 
 def get_link(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    url = re.findall(regex,string)   
+    url = re.findall(regex,string)
     try:
-        link = [x[0] for x in url][0]
-        if link:
-            return link
-        else:
-            return False
+        return link if (link := [x[0] for x in url][0]) else False
     except Exception:
         return False
     
