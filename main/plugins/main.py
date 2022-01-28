@@ -32,10 +32,7 @@ userbot = Client(
     api_id=API_ID)
   
 def thumbnail(sender):
-    if os.path.exists(f'{sender}.jpg'):
-        return f'{sender}.jpg'
-    else:
-         return None
+    return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg') else None
       
 async def get_msg(userbot, client, sender, msg_link, edit):
     chat = ""
@@ -55,9 +52,7 @@ async def get_msg(userbot, client, sender, msg_link, edit):
                 )
             )
             await edit.edit('Trying to Upload.')
-            caption = ""
-            if msg.text is not None:
-                caption = msg.text
+            caption = msg.text if msg.text is not None else ""
             if str(file).split(".")[-1] == 'mkv' or 'mp4' or 'webm':
                 if str(file).split(".")[-1] == 'webm' or 'mkv':
                     path = str(file).split(".")[0] + ".mp4"
@@ -98,8 +93,8 @@ async def get_msg(userbot, client, sender, msg_link, edit):
                 )
             await edit.delete()
         except Exception as e:
-            await edit.edit(f'ERROR: {str(e)}')
-            return 
+            await edit.edit(f'ERROR: {e}')
+            return
     else:
         chat =  msg_link.split("/")[-2]
         await client.copy_message(int(sender), chat, msg_id)
@@ -117,14 +112,14 @@ async def clone(bot, event):
     if 't.me/+' in link:
         xy = await join(userbot, link)
         await edit.edit(xy)
-        return 
+        return
     if 't.me' in link:
         try:
-            await get_msg(userbot, bot, event.chat.id, link, edit) 
+            await get_msg(userbot, bot, event.chat.id, link, edit)
         except FloodWait:
             return await edit.edit('Too many requests, try again later.')
         except ValueError:
             return await edit.edit('Send Only message link or Private channel invites.')
         except Exception as e:
-            return await edit.edit(f'Error: `{str(e)}`')         
+            return await edit.edit(f'Error: `{e}`')         
           
